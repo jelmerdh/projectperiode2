@@ -1,0 +1,28 @@
+body {
+    font-family:  'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.login {
+    color:aqua;
+}
+h1 {
+    
+    color:blue;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+li {
+    display: block;
+    float: left;
+    padding: 8px;
+    background-color: #dddddd;
+}
+
+a {
+    display: block;
+    padding: 8px;
+    background-color: #dddddd;
+  }
