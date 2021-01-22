@@ -11,30 +11,9 @@ public class Measurement {
 	private float wdsp;		// Windsnelheid in kilometers per uur
 	private float prcp;		// Neerslag in centimeters
 	private float sndp;		// Gevallen sneeuw in centimeters
-	private String frshtt;	// vries, regen, sneeuw, hagel, onweer, tornado
-	private float cldp;
-	private int winddir;
-
-	public Measurement(int stn, String date, String time, float temp, float dewp, float stp, float slp, float visib, float wdsp, float prcp, float sndp, String frshtt, float cldp, int winddir) {
-		this.stn = stn;
-		this.date = date;
-		this.time = time;
-		this.temp = temp;
-		this.dewp = dewp;
-		this.stp = stp;
-		this.slp = slp;
-		this.visib = visib;
-		this.wdsp = wdsp;
-		this.prcp = prcp;
-		this.sndp = sndp;
-		this.frshtt = frshtt;
-		this.cldp = cldp;
-		this.winddir = winddir;
-	}
-
-	public Measurement(){
-
-	}
+	private String frshtt;	// Vries, regen, sneeuw, hagel, onweer, tornado
+	private float cldp;		// Bewolktheid
+	private int winddir;	// Windrichting
 
 	public void printer(){
 		System.out.println(getStn() + "\n" + getDate() + "\n" + getTime() + "\n" + getTemp() + "\n" + getDewp() + "\n" + getStp() + "\n" + getSlp() + "\n" + getVisib() + "\n" + getWdsp() + "\n" + getPrcp() + "\n" + getSndp() + "\n" + getFrshtt() + "\n" + getCldp() + "\n" + getWinddir());

@@ -17,9 +17,9 @@ public class Parser {
 	private final Stack<Float> sndpStack = new Stack30<Float>();
 	private final Stack<Float> cldcStack = new Stack30<Float>();
 
-	public boolean parse(Measurement m, String line, int n) {
+	public synchronized boolean parse(Measurement m, String line, int n) {
 		if(m == null){return false;}
-		line = line.replaceAll("[^0-9?!\\.\\-\\:]", "");
+		line = line.replaceAll("[^0-9?!.\\-:]", "");
 		System.out.println(line);
 		Float val = null;
 
@@ -125,7 +125,6 @@ public class Parser {
 	}
 
 	private class Stack30<T> extends Stack<T> {
-		private final int maxSize = 30;
 
 		private Stack30() {
 			super();
@@ -134,6 +133,7 @@ public class Parser {
 		@Override
 		public T push(T object) {
 			//If the stack is too big, remove elements until it's the right size.
+			int maxSize = 30;
 			if (this.size() == maxSize) {
 				this.remove(0);
 			}
