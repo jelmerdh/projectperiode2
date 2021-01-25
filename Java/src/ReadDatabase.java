@@ -1,12 +1,12 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Test2 {
+public class ReadDatabase {
 
 
-    public Database db;
+    private Database db;
 
-    public Test2() {
+    public ReadDatabase() {
         System.out.println("test2 werkt");
         db = new Database("jdbc:mysql://localhost:3306/unwdmi", "root", "");
         selectTest();

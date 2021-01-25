@@ -1,42 +1,35 @@
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.LinkedList;
-import java.sql.Date;
 
-public class InsertTest {
+
+public class WriteDatabase {
 
     // AANMAKEN LINKEDLIST
 
     private Database db;
+    private Metingen meting;
 
-
-    public InsertTest(){
+    public WriteDatabase(){
 
         db = new Database("jdbc:mysql://localhost:3306/unwdmi", "root", "");
-        test();
-    }
-
-    public Date getDate(){
-        long milis = System.currentTimeMillis();
-        java.sql.Date date= new java.sql.Date(milis);
-        return date;
+        Insert(999999, "2021-01-3", "16:01:14", (float)24, (float)5, (float)14,(float)14,(float)35, (float)14,(float)4,"n", (float)15, 3);
+        meting = new Metingen();
     }
 
 
 
-    public void test(){
+    public void Insert(int stn, String date, String time, Float temp, Float dewp, Float stp, Float slp, Float visib, Float  wdsp, Float sndp, String frshtt, Float cldc, int wnddir){
+
         try {
-
 
             System.out.println("Hij begint aan test!");
 
-            String query = "INSERT INTO weatherdata (stn, date, time,temp, dewp, stp,slp, visib, wdsp,sndp, frshtt, cldc,  wnddir)"
+            String query = "INSERT INTO weatherdata (stn, date, time, temp, dewp, stp,slp, visib, wdsp, sndp, frshtt, cldc,  wnddir)"
                     + "VALUES (?, ?, ?, ?, ?,? , ?, ? ,?, ?, ?, ?, ?)";
             PreparedStatement pstm = db.getMyConn().prepareStatement(query);
-            pstm.setInt(1, 999999);
-            pstm.setDate(2, getDate());
-            pstm.setTime(3,);
+            pstm.setInt(1, stn);
+            pstm.setString(2, date);
+            pstm.setString(3,time);
             pstm.setFloat(4, temp);
             pstm.setFloat(5, dewp);
             pstm.setFloat(6, stp);
