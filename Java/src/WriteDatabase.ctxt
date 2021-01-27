@@ -1,7 +1,0 @@
-#BlueJ class context
-comment0.target=WriteDatabase
-comment1.params=
-comment1.target=WriteDatabase()
-comment2.params=stn\ date\ time\ temp\ dewp\ stp\ slp\ visib\ wdsp\ sndp\ frshtt\ cldc\ wnddir
-comment2.target=void\ Insert(int,\ java.lang.String,\ java.lang.String,\ java.lang.Float,\ java.lang.Float,\ java.lang.Float,\ java.lang.Float,\ java.lang.Float,\ java.lang.Float,\ java.lang.Float,\ java.lang.String,\ java.lang.Float,\ int)
-numComments=3

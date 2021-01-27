@@ -1,9 +1,0 @@
-#BlueJ class context
-comment0.target=ReadDatabase
-comment1.params=
-comment1.target=ReadDatabase()
-comment2.params=
-comment2.target=void\ selectTest()
-comment3.params=
-comment3.target=Database\ getDb()
-numComments=4
