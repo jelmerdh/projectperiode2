@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class Parser {
@@ -17,12 +15,11 @@ public class Parser {
 	private final Stack<Float> sndpStack = new Stack30<Float>();
 	private final Stack<Float> cldcStack = new Stack30<Float>();
 
-	public synchronized boolean parse(Measurement m, String line, int n) {
+	public boolean parse(FullMeasurement m, String line, int n) {
 		if(m == null){return false;}
 		line = line.replaceAll("[^0-9?!.\\-:]", "");
-		System.out.println(line);
-		Float val = null;
-
+		float val = Float.parseFloat(line);
+		/*
 		if((n >= 3 && n <= 10) || n == 12){
 			if(line.equals("")){
 				val = fixVal(n);
@@ -30,7 +27,7 @@ public class Parser {
 			else{
 				val = Float.parseFloat(line);
 			}
-		}
+		}*/
 		switch(n) {
 			case 0:
 				if(line.equals("")){
@@ -89,6 +86,42 @@ public class Parser {
 		return true;
 	}
 
+	public boolean parse(TempMeasurement m, String line, int n) {
+		if (m == null) {return false;}
+		line = line.replaceAll("[^0-9?!.\\-:]", "");
+		switch(n) {
+			case 0:
+				if (line.equals("")) {
+					m = null;
+					return false;
+				}
+				m.setStn(Integer.parseInt(line));
+				return true;
+			case 1:
+				if (line.equals("")) {
+					m.setDate(lastDate);
+				} else {
+					m.setDate(line);
+					lastDate = line;
+				}
+				return true;
+			case 2:
+				if (line.equals("")) {
+					m.setTime(lastTime);
+				} else {
+					m.setTime(line);
+					lastTime = line;
+				}
+				return true;
+			case 3:
+				m.setTemp(Float.parseFloat(line));
+				return true;
+			default:
+				return true;
+		}
+	}
+
+	/*
 	private Float fixVal(int n){
 		Stack<Float> s;
 		switch (n){
@@ -122,7 +155,7 @@ public class Parser {
 			}
 		}
 		return avg;
-	}
+	}*/
 
 	private class Stack30<T> extends Stack<T> {
 
