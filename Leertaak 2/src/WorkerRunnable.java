@@ -14,7 +14,6 @@ public class WorkerRunnable implements Runnable{
 		this.clientSocket = clientSocket;
 		parser = new Parser();				// parser zorgt er voor dat binnenkomende data omgezet wordt naar variabelen
 	}
-
 	@Override
 	public void run() {
 		try {
@@ -55,6 +54,14 @@ public class WorkerRunnable implements Runnable{
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		finally {
+			try {
+				clientSocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println("ja");
 		}
 	}
 }

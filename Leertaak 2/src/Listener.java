@@ -31,6 +31,8 @@ public class Listener implements Runnable{
 			executor.execute(wr);							// afhandelaar starten in aparte thread
 		} catch (IOException e) {
 			e.printStackTrace();
+			break;					// er is iets mis in de verbinding
 		}
-	} // TODO: programma stoppen als er geen data meer binnen komt.
+		System.exit(1);	// als er iets fout is met de verbinding sluit het proces af
+	}
 }
