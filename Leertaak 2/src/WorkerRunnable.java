@@ -61,7 +61,6 @@ public class WorkerRunnable implements Runnable{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("ja");
 		}
 	}
 }
