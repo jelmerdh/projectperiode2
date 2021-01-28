@@ -21,7 +21,7 @@ public class FullMeasurement {
 		try {
 			FileWriter csvWriter = new FileWriter("FullWeatherData.csv", true);
 			csvWriter.append(String.valueOf(stn)).append(",").append(date).append(",").append(time).append(",").append(String.valueOf(temp)).append(",").append(String.valueOf(dewp)).append(",").append(String.valueOf(stp)).append(",").append(String.valueOf(slp)).append(",").append(String.valueOf(visib)).append(",").append(String.valueOf(wdsp)).append(",").append(String.valueOf(prcp)).append(",").append(String.valueOf(sndp)).append(",").append(frshtt).append(",").append(String.valueOf(cldp)).append(",").append(String.valueOf(winddir)).append("\n");
-			csvWriter.flush();
+			csvWriter.flush();	// data opgeslagen naar csv file
 			csvWriter.close();
 		}
 		catch (IOException e){
@@ -33,6 +33,7 @@ public class FullMeasurement {
 		System.out.println(stn + "\n" + date + "\n" + time + "\n" + temp + "\n" + dewp + "\n" + stp + "\n" + slp + "\n" + visib + "\n" + wdsp + "\n" + prcp + "\n" + sndp + "\n" + frshtt + "\n" + cldp + "\n" + winddir);
 	}
 
+	//getters setters
 	public int getStn() {return stn;}
 	public void setStn(int stn) {this.stn = stn;}
 	public String getDate() {return date;}

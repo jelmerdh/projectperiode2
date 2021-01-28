@@ -11,7 +11,7 @@ public class TempMeasurement {
 		try {
 			FileWriter csvWriter = new FileWriter("TempData.csv", true);
 			csvWriter.append(String.valueOf(stn)).append(",").append(date).append(",").append(time).append(",").append(String.valueOf(temp)).append("\n");
-			csvWriter.flush();
+			csvWriter.flush();	// data opgeslagen naar csv file
 			csvWriter.close();
 		}
 		catch (IOException e){
@@ -23,6 +23,7 @@ public class TempMeasurement {
 		System.out.println(stn + "\n" + date + "\n" + time + "\n" + temp);
 	}
 
+	//getters setters
 	public int getStn() {return stn;}
 	public void setStn(int stn) {this.stn = stn;}
 	public String getDate() {return date;}
