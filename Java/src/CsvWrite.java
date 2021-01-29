@@ -5,7 +5,7 @@ public class CsvWrite {
 
     public CsvWrite(){
 
-        write(999999, "2021-01-3", "16:01:14", (float)24, (float)5, (float)14,(float)14,(float)35, (float)14,(float)4,"n", (float)15, 3);
+        write(760013, "2021-01-2", "16:01:14", (float)24, (float)5, (float)14,(float)14,(float)35, (float)14,(float)4,"n", (float)15, 3);
     }
     public void write(int stn, String date, String time, Float temp, Float dewp, Float stp, Float slp, Float visib, Float  wdsp, Float sndp, String frshtt, Float cldc, int wnddir) {
         StringBuilder sb = new StringBuilder();
