@@ -1,16 +1,23 @@
 <?php
-/* Database credentials. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'users');
 
-/* Attempt to connect to MySQL database */
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+//Credentials checker
+function get_credentials($file) {
+  $fp = fopen($file, 'r');
+  while ($line = fgetcsv($fp)) {
+    $lines[] = $line;
+  }
+  fclose($fp);
 
-// Check connection
-if($link === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
+  return $lines;
 }
+
+$credentials = get_credentials('config/userdata.csv');
+
+$check_credentials = function($username, $password) use ($credentials) {
+foreach($credentials as $credential)
+    if($credential[0] == $username && $credential[1] == $password)
+        return true;
+
+return false;
+};
 ?>
