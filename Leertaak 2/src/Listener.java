@@ -1,39 +1,38 @@
 import java.net.*;
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Listener implements Runnable{
 
-	private final int port;
-	private final Parser parser;
+	/*
+	Deze class luistert naar binnenkomende serveraanvragen en laat ze afhandelen in andere thread
+	 */
+
+	private final int port;					// poort waar op geluisterd wordt.
+	private final ExecutorService executor;	// voor de threadpool
 
 	public Listener(int port){
 		this.port = port;
-		parser = new Parser();
+		executor = Executors.newFixedThreadPool(900);	// er wordt een threadpool gemaakt bestaande uit 900 threads
 	}
 	@Override
 	public void run() {
-		try(
-				ServerSocket serverSocket = new ServerSocket(port);
-				Socket clientSocket = serverSocket.accept();
-				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
-		){
-			String data;
-			while ((data = in.readLine()) != null){
-				if(data.equals("\t<MEASUREMENT>")){
-					Measurement m = new Measurement();
-					int i = 0;
-					while(!(data).equals("\t</MEASUREMENT>")){
-						data = in.readLine();
-						if(!(parser.parse(m, data, i))){
-							break;
-						}
-						i++;
-					}
-					m.printer();
-				}
-			}
+		ServerSocket serverSocket = null;
+		try {	// server socket laten luisteren op poort
+			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		assert serverSocket != null;
+		while (true) try {
+			Socket clientSocket = serverSocket.accept();	// binnenkomende aanvraag
+			Runnable wr = new WorkerRunnable(clientSocket);	// aanvraag afhandelaar
+			executor.execute(wr);							// afhandelaar starten in aparte thread
+		} catch (IOException e) {
+			e.printStackTrace();
+			break;					// er is iets mis in de verbinding
+		}
+		System.exit(1);	// als er iets fout is met de verbinding sluit het proces af
 	}
 }
