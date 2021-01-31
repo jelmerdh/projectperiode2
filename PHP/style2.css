@@ -1,15 +1,7 @@
 body {
-  background-image: linear-gradient(to left, rgba(0, 117, 234), rgba(87, 171, 255));
+  background-image: white;
   font-family: verdana, Helvetica, sans-serif;
-  color: white;
-}
-
-.body {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  margin: auto;
-  width: 80%;
-  padding: 10px;
-  height: 800px;
+  color: #05386B;
 }
 
 .wrapper {
@@ -36,7 +28,7 @@ li:last-child {
 
 li a {
   display: block;
-  color: white;
+  color: #05386B;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;

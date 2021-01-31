@@ -18,38 +18,24 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <body>
 
   <div class="wrapper">
+    <img src="media\logo.png" alt="" style="float:left;width:7%;">
     <h1> Weather Dashboard</h1>
     <div class="topnav" id="myTopnav">
-      <a href="dashboard.php" class="active">Dashboard</a>
-      <a href="page2.php">Mexico</a>
-      <a href="#about">Graph</a>
-      <a href="logout.php">Logout</a>
+      <a href="dashboard.php"><b>Dashboard</b></a>
+      <a href="page2.php"><b>Mexico</b></a>
+      <a href="logout.php"><b>Logout</b></a>
       <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
     </div>
-
-    <form method="post">
-      <button type="submit" name"setStationVar1" class="submit button1"  value="setStationVar1">Station 1 </button>
-      <button type="submit" name"setStationVar2" class="submit button2"  value="setStationVar2">Station 2 </button>
-      <button type="submit" name"setStationVar3" class="submit button3"  value="setStationVar3">Station 3 </button>
-      <button  type="submit" name"setStationVar4" class="submit button4"  value="setStationVar4">Station 4 </button>
-      <button  type="submit" name"setStationVar5" class="submit button5"  value="setStationVar5">Station 5 </button>
-      <button  type="submit" name"setStationVar5" class="submit button6"  value="setStationVar5">Station 6 </button>
-      <button  type="submit" name"setStationVar5" class="submit button7"  value="setStationVar5">Station 7 </button>
-      <button  type="submit" name"setStationVar5" class="submit button8"  value="setStationVar5">Station 8 </button>
-      <button  type="submit" name"setStationVar5" class="submit button9"  value="setStationVar5">Station 9 </button>
-      <button  type="submit" name"setStationVar5" class="submit button10"  value="setStationVar5">Station 10 </button>
-
-    </form>
     <meta charset="utf-8">
     <figure class="highcharts-figure">
       <div id="container"></div>
       <p class="highcharts-description">
       </p>
     </figure>
-    </body>
   <?php
   $csvPath = "config/TempData.csv";
   $csvData = array_map('str_getcsv', file($csvPath));
+  $stnr = array_map('str_getcsv', file("config\stations.csv"));
 
   function search($array, $key, $value) {
         $results = array();
@@ -114,39 +100,53 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   $hottestArray  = getHighestTemp($csvData, $hottestStations);
 
   function setStationVar($array){
-  $tel = 1;
-  $teller = 0;
-   if(isset($_POST['setStationVar1'])){
-      $tel = 1;
-    }
-    else if(isset($_POST['setStationVar2'])){
-      $tel = 2;
-    }
-    else if(isset($_POST['setStationVar3'])){
-      $tel = 3;
-    }
-    else if(isset($_POST['setStationVar4'])){
-      $tel = 4;
-    }
-    else if(isset($_POST['setStationVar5'])){
-      $tel = 5;
-    }
+    $tel = 1;
     #print("$tel<br>");
-
-    foreach ($array as $station => $temp) {
-        if($teller == $tel-1){
-          $teststation = $station;
-          #print("$teststation");
-          return $teststation;
-          break;
-        }
-        else{
-          $teller++;
-          #print("$teller<br>");
-
+    $teller = 0;
+     if(isset($_POST['setStationVar1'])){
+        $tel = 1;
+        #$tel = $_GET['setStationVar1'];
+        #print("$tel<br>");
       }
-  }
-  }
+      else if(isset($_POST['setStationVar2'])){
+        $tel = 2;
+        #print("$tel<br>");
+      }
+      else if(isset($_POST['setStationVar3'])){
+        $tel = 3;
+        #print("$tel<br>");
+      }
+      else if(isset($_POST['setStationVar4'])){
+        $tel = 4;
+        #print("$tel<br>");
+      }
+      else if(isset($_POST['setStationVar5'])){
+        $tel = 5;
+      }else if(isset($_POST['setStationVar6'])){
+        $tel = 6;
+      }else if(isset($_POST['setStationVar7'])){
+        $tel = 7;
+      }else if(isset($_POST['setStationVar8'])){
+        $tel = 8;
+      }else if(isset($_POST['setStationVar9'])){
+        $tel = 9;
+      }else if(isset($_POST['setStationVar10'])){
+        $tel = 10;
+      }
+      #print("$tel<br>");
+      foreach ($array as $station => $temp) {
+          if($teller == $tel - 1){
+            $teststation = $station;
+            #print("$teststation");
+            return $teststation;
+            break;
+          }
+          else{
+            $teller++;
+            #print("$teller<br>");
+        }
+      }
+    }
   $stationvar = setStationVar($hottestArray);
 
   #$station = getHighestTemp($csvData, $hottestStations);
@@ -176,17 +176,24 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   </script>
   <script>
   window.onload = function () {
+    CanvasJS.addColorSet("red",
+        [//colorSet Array
 
+        "#05386B",
+        ]);
 
   var chart = new CanvasJS.Chart("chartContainer", {
   	animationEnabled: true,
     zoomEnabled: true,
+    backgroundColor: "white",
+    colorSet: "red",
   	title:{
-  		text: ""
+  		text: "Top 10 hottest weather",
+      fontColor: "#05386B",
   	},
   	axisY: {
   		title: "Temperature",
-
+      fontColor: "#05386B",
   		suffix: "°C",
 
 
@@ -206,6 +213,38 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   <div id="chartContainer" style="height: 370px; width: 60%;"></div>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
+  <?php
+    $hottestkeys  = array_keys($hottestArray);
+
+    for ($i=0; $i < count($hottestkeys); $i++) {
+      $vez[] = search($stnr, '0', $hottestkeys[$i]);
+
+    }
+
+    foreach ($vez as $ster) {
+      $sarr[] = $ster["0"]["2"];
+      $narr[] = $ster["0"]["1"];
+    }
+    $hotCountry = array_values($sarr);
+    $hotCity = array_values($narr);
+   ?>
+
+  <form action="" method="post">
+    <?php
+      $count = 1;
+      for ($i=0; $i < count($hottestkeys) ; $i++) {
+        if (strpos($hotCity[$i], $hotCountry[$i]) !== false) {
+          echo '<button type="submit"  name="setStationVar'.$i.'" class="submit button'.$i.'1"  value="1">'.$count.'. '. $hotCity[$i] .'</button>';
+        }
+        else {
+          echo '<button type="submit"  name="setStationVar'.$i.'" class="submit button'.$i.'1"  value="1">'.$count.'. '.$hotCountry[$i]. '/'. $hotCity[$i] .'</button>';
+        }
+
+        $count++;
+      }
+     ?>
+
+      </form>
 </body>
 
 
