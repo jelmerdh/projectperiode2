@@ -54,7 +54,7 @@ else {
 //the function is used to find the $currentstation in the array $csv
 $date = search($csv, '1', $currentDay, $currentstation);
 if ($date == NULL){
-    //echo "no data found";
+    //als er geen data beschikbaar is, geen errors maar lege strings en tekst
     $past[] = array("no data found","", "", "no data found",
     "", "", "", "",
     "", "", "", "",
@@ -83,10 +83,11 @@ foreach ($country as $zar) {
 
 //$lastCountry = end($name);
 
-
+//function to change the filled in date to get data from past
 function changeDate($pastdata, $day){
-    
+    // explode data into year month day
     $slicedData = explode("-", $pastdata);
+    // check to what day the data needs to go
     switch($day){
       case 0:
         $slicedData[2] = $slicedData[2] - 1;
@@ -98,6 +99,7 @@ function changeDate($pastdata, $day){
         $slicedData[2] = $slicedData[2] - 3;
         break;
     }
+    // add the changed data together
     $finishedData = $slicedData[0] . "-" . $slicedData[1] . "-" . $slicedData[2];
     return $finishedData;
 }
@@ -155,19 +157,7 @@ function changeDate($pastdata, $day){
         </div>
         <!-- bottom Half -->
         <div class="bottom">
-          <form method="GET">
-
-          <br><br><br>
-          <table>
-          <?php // mogelijkheid voor back knopje
-              //echo '<td><form action="Countries/mexico.php" method="GET">';
-              //echo '<input type="hidden" id="city" name="city" value="'. $mexico[$i] .'">';
-              //echo '<button type="submit" class="box" id="station" name="station" value="' . $station[$i] . '">' . $mexico[$i] . '</button>';
-            //echo '</form></td>';
-            //}
-           ?>
-         </table>
-         </form>
+          
         </div>
       </div>
     </div>
