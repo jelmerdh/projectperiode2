@@ -52,7 +52,12 @@ else {
 //the function is used to find the $currentstation in the array $csv
 $date = search($csv, '1', $currentDay);
 if ($date == NULL){
-    echo "no data found";
+    //echo "no data found";
+    $past[] = array("no data found","", "", "no data found",
+    "", "", "", "",
+    "", "", "", "",
+    "", "");
+                  $pastdata = end($past);
 }else {
     
 foreach ($date as $var) {
