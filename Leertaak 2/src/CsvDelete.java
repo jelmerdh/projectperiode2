@@ -12,6 +12,7 @@ public class CsvDelete implements Runnable{
 
 	@Override
 	public void run() {
+		//set de datum op de te datum die verwijderd moet worden, pakt ook mexico of midden america
 		String i = LocalDate.now().minusDays(28).toString();
 		File inputFile = new File("TempData.csv");
 		File tempFile = new File("TempoData.csv");
@@ -20,6 +21,7 @@ public class CsvDelete implements Runnable{
 			inputFile = new File("FullWeatherData.csv");
 			tempFile = new File("TempoMexico.csv");
 		}
+		//set de datum om naar een int
 		int dateToRemove=Integer.parseInt(i.replace("-", ""));
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
@@ -35,11 +37,13 @@ public class CsvDelete implements Runnable{
 		String currentRemove = "temp";
 		int curRem = 0;
 		try {
+			//leest lijn voor lijn de csv's door
 			assert reader != null;
 			while ((currentLine = reader.readLine()) != null) {
 				String[] currParts = currentLine.split(",");
 
 				try {
+					//set de datum uit de csv om naar een int
 					curRem = Integer.parseInt(currParts[1].replace("-", ""));
 					if (curRem < dateToRemove) {
 						currentRemove = currentLine;
@@ -48,7 +52,7 @@ public class CsvDelete implements Runnable{
 				} catch (Exception ignored) {
 
 				}
-				// trim newline when comparing with lineToRemove
+				//vergelijkt de datums, als de datum ouder is dan de te verwijderen data dan word die niet naar het nieuwe document geschreven
 				String trimmedLine = currentLine.trim();
 				if (trimmedLine.equals(currentRemove)) continue;
 				try {
@@ -69,19 +73,21 @@ public class CsvDelete implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		// verwijderd het orginele document
 		if (inputFile.delete()) {
-			//System.out.println("Deleted the file: " + inputFile.getName());
+
 		} else {
 			System.out.println("Failed to delete the file.");
 		}
+		// vernoemt het temp document naar het orginele document
 		boolean success = tempFile.renameTo(inputFile);
 
 		if (!success) {
 			System.out.println("failed to rename input file");
 		}
+		//zorgt dat de code 1 keer per dag wordt uitgevoerd
 		try {
-			Thread.sleep(86400000);	// 1 dag
+			Thread.sleep(86400000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
