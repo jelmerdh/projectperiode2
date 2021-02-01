@@ -14,7 +14,7 @@ $csv = array_map('str_getcsv', file('../config/FullWeatherData.csv'));
 $station = array_map('str_getcsv', file('../config/stations.csv'));
 
 //this function is used to find specific items in a multidimensional array
-function search($array, $key, $value) {
+function search($array, $key, $value, $currentstation) {
     $results = array();
 
     // if it is array
@@ -23,7 +23,9 @@ function search($array, $key, $value) {
         // if array has required key and value
         // matched store result
         if (isset($array[$key]) && $array[$key] == $value) {
-            $results[] = $array;
+          if (isset($array[0]) && $array[0] == $currentstation) {  
+          $results[] = $array;
+          }
         }
 
         // Iterate for each element in array
@@ -31,7 +33,7 @@ function search($array, $key, $value) {
 
             // recur through each element and append result
             $results = array_merge($results,
-                    search($subarray, $key, $value));
+                    search($subarray, $key, $value, $currentstation));
         }
     }
 
@@ -39,41 +41,52 @@ function search($array, $key, $value) {
 }
 //checks if the submit button has been clicked
 if (isset($_GET['station'])) {
-//this variable gets the information from the pag2.php form
+//this variable gets the information from the mexico.php form
 if ($_GET['station'] == NULL) {
   header("location: ../page2.php");
 }
 else {
   $currentstation = $_GET['station'];
   $currentcity = $_GET['city'];
+  $currentDay = $_GET['day'];
 }
-
+//echo $currentDay;
 //the function is used to find the $currentstation in the array $csv
-$res = search($csv, '0', $currentstation);
-foreach ($res as $var) {
-    //$dataArray is filled with every information about the correlating station
-    $dataArray[] = array($var["0"], $var['1'], $var['2'], $var['3'],
-                         $var["4"], $var['5'], $var['6'], $var['7'],
-                         $var["8"], $var['9'], $var['10'], $var['11'],
-                         $var['10'], $var['11']);
+$date = search($csv, '1', $currentDay, $currentstation);
+if ($date == NULL){
+    //echo "no data found";
+    $past[] = array("no data found","", "", "no data found",
+    "", "", "", "",
+    "", "", "", "",
+    "", "");
+                  $pastdata = end($past);
+}else {
+    
+foreach ($date as $var) {
+    //print $var['3'];
+  $past[] = array($var['1'],$var["0"], $var['2'], $var['3'],
+                  $var["4"], $var['5'], $var['6'], $var['7'],
+                  $var["8"], $var['9'], $var['10'], $var['11'],
+                  $var['10'], $var['11']);
 }
 
-//$lastData is the array with the latest weather information
-$lastData = end($dataArray);
+$pastdata = end($past);
 
-$country = search($station, '0', $currentstation);
+//$pastdata is the array with the past weather information
+//$pastdata = end($dataArray);
 
-//$zar will display the country name.
+$country = search($station, '0', $currentDay, $currentstation);
+
 foreach ($country as $zar) {
   $name[] = $zar["1"];
 }
 
-$lastCountry = end($name);
+//$lastCountry = end($name);
 
 
-function changeDate($lastData, $day){
+function changeDate($pastdata, $day){
     
-    $slicedData = explode("-", $lastData);
+    $slicedData = explode("-", $pastdata);
     switch($day){
       case 0:
         $slicedData[2] = $slicedData[2] - 1;
@@ -89,7 +102,7 @@ function changeDate($lastData, $day){
     return $finishedData;
 }
 
-
+}
 ?>
 <html lang="en" dir="ltr">
   <head>
@@ -108,9 +121,9 @@ function changeDate($lastData, $day){
           <img src="../media\logo.png" alt="" style="float:left;width:7%;">
           <h1>Weatherstation <?php echo $currentcity ?></h1>
           <h2>Mexico</h2>
-          <h3><?php echo $lastData[1] ?> <?php echo $lastData[2] ?></h3>
+          <h3><?php echo $pastdata[0] ?> <?php echo $pastdata[2] ?></h3>
           <div class="leftside">
-            <p style="font-size:50px"><?php echo $lastData[3] ?> &#176;C</p>
+            <p style="font-size:50px"><?php echo $pastdata[3] ?> &#176;C</p>
           </div>
 
           <div class="rightside">
@@ -120,22 +133,22 @@ function changeDate($lastData, $day){
             </ul>
             <table style="width:100%;border-spacing:30px">
               <tr>
-                <td><b>Dew point:<br><?php echo $lastData[4] ?> &#176;C</b></td>
-                <td><b>Station Level Pressure: <br><?php echo $lastData[5] ?> m</b></td>
-                <td><b>Sea Level Pressure: <br><?php echo $lastData[6] ?> m</b></td>
+                <td><b>Dew point:<br><?php echo $pastdata[4] ?> &#176;C</b></td>
+                <td><b>Station Level Pressure: <br><?php echo $pastdata[5] ?> m</b></td>
+                <td><b>Sea Level Pressure: <br><?php echo $pastdata[6] ?> m</b></td>
               </tr>
               <tr>
-                <td><b>Visibility:<br><?php echo $lastData[7] ?> km</b></td>
-                <td><b>Wind Speed:<br><?php echo $lastData[8] ?> km/h</b></td>
-                <td><b>Percipitation:<br><?php echo $lastData[9] ?> cm</b></td>
+                <td><b>Visibility:<br><?php echo $pastdata[7] ?> km</b></td>
+                <td><b>Wind Speed:<br><?php echo $pastdata[8] ?> km/h</b></td>
+                <td><b>Percipitation:<br><?php echo $pastdata[9] ?> cm</b></td>
               </tr>
               <tr>
                 <td><b>Events:<br>
-                  <?php if ($lastData[10]=="000000") {echo "none"; }
-                  else {echo $lastData[10];}
+                  <?php if ($pastdata[10]=="000000") {echo "none"; }
+                  else {echo $pastdata[10];}
                   ?></td></b>
-                <td><b>Cloud Cover:<br><?php echo $lastData[11] ?></b></td>
-                <td><b>Wind Direction:<br><?php echo $lastData[12] ?></td></b>
+                <td><b>Cloud Cover:<br><?php echo $pastdata[11] ?></b></td>
+                <td><b>Wind Direction:<br><?php echo $pastdata[12] ?></td></b>
               </tr>
             </table>
           </div>
@@ -146,29 +159,12 @@ function changeDate($lastData, $day){
 
           <br><br><br>
           <table>
-          <?php
-            for ($i=0; $i < 3 ; $i++) {
-              switch ($i){
-                case 0:
-                  $textshown = changeDate($lastData[1], 0);
-                  //$lastData[1] = changeDate($lastData[1], 0);
-                  break;
-                case 1:
-                  $textshown = changeDate($lastData[1], 1);
-                  //$lastData[1] = changeDate($lastData[1], 1);
-                  break;
-                case 2:
-                  $textshown = changeDate($lastData[1], 2);
-                  //echo $textshown;
-                  //$lastData[1] = changeDate($lastData[1], 2);
-                  break;
-              }
-              echo '<td><form action="mexicopast.php" method="GET">';
-                echo '<input type="hidden" id="city" name="city" value="'. $currentcity .'">';
-                echo '<input type="hidden" id="day" name="day" value="'. $textshown .'">';
-                echo '<button type="submit" class="box" id="station" name="station" value="' . $lastData[0] . '">' . $textshown . '</button>';
-              echo '</form></td>';
-            }
+          <?php // mogelijkheid voor back knopje
+              //echo '<td><form action="Countries/mexico.php" method="GET">';
+              //echo '<input type="hidden" id="city" name="city" value="'. $mexico[$i] .'">';
+              //echo '<button type="submit" class="box" id="station" name="station" value="' . $station[$i] . '">' . $mexico[$i] . '</button>';
+            //echo '</form></td>';
+            //}
            ?>
          </table>
          </form>
