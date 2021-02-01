@@ -69,9 +69,9 @@ foreach ($country as $zar) {
 
 $lastCountry = end($name);
 
-
+//function to change the date to the past
 function changeDate($lastData, $day){
-    
+    // explode data into year month day
     $slicedData = explode("-", $lastData);
     switch($day){
       case 0:
@@ -84,6 +84,7 @@ function changeDate($lastData, $day){
         $slicedData[2] = $slicedData[2] - 3;
         break;
     }
+    // add the changed data together
     $finishedData = $slicedData[0] . "-" . $slicedData[1] . "-" . $slicedData[2];
     return $finishedData;
 }
@@ -147,19 +148,16 @@ function changeDate($lastData, $day){
           <table>
           <?php
             for ($i=0; $i < 3 ; $i++) {
+              //sets the date of the boxes at the bottom for days of past data
               switch ($i){
                 case 0:
                   $textshown = changeDate($lastData[1], 0);
-                  //$lastData[1] = changeDate($lastData[1], 0);
                   break;
                 case 1:
                   $textshown = changeDate($lastData[1], 1);
-                  //$lastData[1] = changeDate($lastData[1], 1);
                   break;
                 case 2:
                   $textshown = changeDate($lastData[1], 2);
-                  //echo $textshown;
-                  //$lastData[1] = changeDate($lastData[1], 2);
                   break;
               }
               echo '<td><form action="mexicopast.php" method="GET">';
