@@ -63,6 +63,7 @@ $lastData = end($dataArray);
 
 $country = search($station, '0', $currentstation);
 
+//$zar will display the country name.
 foreach ($country as $zar) {
   $name[] = $zar["1"];
 }

@@ -30,17 +30,16 @@ public class CsvDelete {
         String currentLine;
         String currentRemove = "temp";
         int curRem = 0;
-        boolean found = false;
         while ((currentLine = reader.readLine()) != null) {
             String[] currParts = currentLine.split(",");
 
-            try{curRem=Integer.parseInt(currParts[1].replace("-", ""));
+            try {
+                curRem = Integer.parseInt(currParts[1].replace("-", ""));
                 if (curRem < dateToRemove) {
                     currentRemove = currentLine;
                     System.out.println(curRem);
                 }
-                else {found = true;}
-            } catch(Exception e) {}
+            }catch(Exception e) {}
             // trim newline when comparing with lineToRemove
             String trimmedLine = currentLine.trim();
             if (trimmedLine.equals(currentRemove)) continue;
