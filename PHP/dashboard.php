@@ -214,6 +214,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
   <?php
+  //$hottestkeys shows the $hottest weather
     $hottestkeys  = array_keys($hottestArray);
 
     for ($i=0; $i < count($hottestkeys); $i++) {
@@ -232,7 +233,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   <form action="" method="post">
     <?php
       $count = 1;
+      //As long as there is a value in $hottestKeys, there will be another button made.
       for ($i=0; $i < count($hottestkeys) ; $i++) {
+        //If $hotCity already contains a country, then there won't be a nother country added to the button/
+
         if (strpos($hotCity[$i], $hotCountry[$i]) !== false) {
           echo '<button type="submit"  name="setStationVar'.$i.'" class="submit button'.$i.'1"  value="1">'.$count.'. '. $hotCity[$i] .'</button>';
         }
