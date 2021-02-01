@@ -65,7 +65,7 @@ foreach ($date as $var) {
 
 $pastdata = end($past);
 
-//$pastdata is the array with the latest weather information
+//$pastdata is the array with the past weather information
 //$pastdata = end($dataArray);
 
 $country = search($station, '0', $currentstation);
@@ -100,7 +100,7 @@ function changeDate($pastdata, $day){
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Design Calvin</title>
+    <title>Mexico Stations</title>
 
     <link rel="stylesheet" href="../style2.css">
   </head>
@@ -114,7 +114,7 @@ function changeDate($pastdata, $day){
           <img src="../media\logo.png" alt="" style="float:left;width:7%;">
           <h1>Weatherstation <?php echo $currentcity ?></h1>
           <h2>Mexico</h2>
-          <h3><?php echo $pastdata[1] ?> <?php echo $pastdata[2] ?></h3>
+          <h3><?php echo $pastdata[0] ?> <?php echo $pastdata[2] ?></h3>
           <div class="leftside">
             <p style="font-size:50px"><?php echo $pastdata[3] ?> &#176;C</p>
           </div>

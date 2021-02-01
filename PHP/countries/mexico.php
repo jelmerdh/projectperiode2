@@ -93,7 +93,7 @@ function changeDate($lastData, $day){
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Design Calvin</title>
+    <title>Mexico Stations</title>
 
     <link rel="stylesheet" href="../style2.css">
   </head>
