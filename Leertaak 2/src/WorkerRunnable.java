@@ -5,6 +5,7 @@ public class WorkerRunnable implements Runnable{
 
 	/*
 	Deze class handeld binnenkomende data af
+	@Author Jorian Koning
 	 */
 
 	private final Socket clientSocket;
@@ -20,26 +21,26 @@ public class WorkerRunnable implements Runnable{
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));	// binnenkomende data
 			String data;
 			while ((data = in.readLine()) != null) {
-				if (data.equals("\t<MEASUREMENT>")) {
+				if (data.equals("\t<MEASUREMENT>")) {			// begin van XML data
 					int stn;
 					if ((stn = Integer.parseInt(in.readLine().replaceAll("[^0-9?!.\\-:]", ""))) >= 760013 && stn <= 769043) {	// Mexicaanse data
 						FullMeasurement fm = new FullMeasurement();
 						int i = 0;
 						data = String.valueOf(stn);
-						while (!(data).equals("\t</MEASUREMENT>")) {
+						while (!(data).equals("\t</MEASUREMENT>")) {	// eind van XML data
 							if (!(parser.parse(fm, data, i))) {	// data opslaan in FullMearsurement class
 								break;							// als er iets mis is gegaan met de data, niks meer opgeslagen
 							}
 							i++;
 							data = in.readLine();
 						}
-						fm.writeData();
+						fm.writeData();							// schrijf data naar csv
 					}
 					else if ((stn >= 785830 && stn <= 788078) || (stn >= 749025 && stn <= 749035)){		// data uit midden Amerika
 						TempMeasurement tm = new TempMeasurement();
 						int i = 0;
 						data = String.valueOf(stn);
-						while (!(data).equals("\t</MEASUREMENT>")) {
+						while (!(data).equals("\t</MEASUREMENT>")) {	// eind van XML data
 							if(i<=3){								// alleen de eerste 4 waardes hoeven opgeslagen worden
 								if (!(parser.parse(tm, data, i))) {	// data opslaan in TempMearsurement class
 									break;							// als er iets mis is gegaan met de data, niks meer opgeslagen
@@ -48,7 +49,7 @@ public class WorkerRunnable implements Runnable{
 							i++;
 							data = in.readLine();
 						}
-						tm.writeData();
+						tm.writeData();							// schrijf data naar csv
 					}
 				}
 			}
@@ -57,7 +58,7 @@ public class WorkerRunnable implements Runnable{
 		}
 		finally {
 			try {
-				clientSocket.close();
+				clientSocket.close();	// connectie met client sluiten als er een fout opgetreden is
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

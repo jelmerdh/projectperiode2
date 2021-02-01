@@ -7,6 +7,7 @@ public class Listener implements Runnable{
 
 	/*
 	Deze class luistert naar binnenkomende serveraanvragen en laat ze afhandelen in andere thread
+	@Author Jorian Koning
 	 */
 
 	private final int port;					// poort waar op geluisterd wordt.

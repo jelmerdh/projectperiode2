@@ -2,6 +2,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FullMeasurement {
+
+	/*
+	Weergegevens uit Mexico
+	@Author Jorian Koning
+	 */
+
 	private int stn;		// station
 	private String date;
 	private String time;
@@ -17,7 +23,7 @@ public class FullMeasurement {
 	private float cldp;		// Bewolktheid
 	private int winddir;	// Windrichting
 
-	public synchronized void writeData(){
+	public synchronized void writeData(){	// schrijf data naar csv
 		try {
 			FileWriter csvWriter = new FileWriter("FullWeatherData.csv", true);
 			csvWriter.append(String.valueOf(stn)).append(",").append(date).append(",").append(time).append(",").append(String.valueOf(temp)).append(",").append(String.valueOf(dewp)).append(",").append(String.valueOf(stp)).append(",").append(String.valueOf(slp)).append(",").append(String.valueOf(visib)).append(",").append(String.valueOf(wdsp)).append(",").append(String.valueOf(prcp)).append(",").append(String.valueOf(sndp)).append(",").append(frshtt).append(",").append(String.valueOf(cldp)).append(",").append(String.valueOf(winddir)).append("\n");
@@ -29,9 +35,12 @@ public class FullMeasurement {
 		}
 	}
 
+	/*
+	methode voor test purposes
 	public void printer(){
 		System.out.println(stn + "\n" + date + "\n" + time + "\n" + temp + "\n" + dewp + "\n" + stp + "\n" + slp + "\n" + visib + "\n" + wdsp + "\n" + prcp + "\n" + sndp + "\n" + frshtt + "\n" + cldp + "\n" + winddir);
 	}
+	 */
 
 	//getters setters
 	public int getStn() {return stn;}

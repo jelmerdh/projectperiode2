@@ -7,7 +7,12 @@ import java.util.Stack;
 
 public class Parser {
 
-	public boolean parse(FullMeasurement m, String line, int n) {	// parser voor mexico data
+	/*
+	Deze klasse stipt de data uit de XML gegevens
+	@Author Jorian Koning
+	 */
+
+	public boolean parse(FullMeasurement m, String line, int n) {	// parser voor mexico data, returnt false als er kritieke data mist, anders true
 		if(m == null){return false;}	// als m == null, er is ergens een keer iets fout gegaan, return false
 		line = line.replaceAll("[^0-9?!.\\-:]", "");	// de xml jas uit trekken
 		if(line.equals("")){	// missende data
@@ -26,7 +31,7 @@ public class Parser {
 			case 1:
 				if(line.equals("")) {
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					m.setDate(dtf.format(LocalDateTime.now()));
+					m.setDate(dtf.format(LocalDateTime.now()));		// datum is niet ontvangen dus huidige datum wordt gebruikt.
 				}
 				else {
 					m.setDate(line);
@@ -35,7 +40,7 @@ public class Parser {
 			case 2:
 				if(line.equals("")) {
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-					m.setDate(dtf.format(LocalDateTime.now()));
+					m.setDate(dtf.format(LocalDateTime.now()));	// tijd is niet ontvangen dus huidige tijd wordt gebruikt.
 				}
 				else {
 					m.setTime(line);
@@ -71,7 +76,7 @@ public class Parser {
 		}
 	}
 
-	public boolean parse(TempMeasurement m, String line, int n) {	// parser voor midden America data
+	public boolean parse(TempMeasurement m, String line, int n) {	// parser voor midden America data, returnt false als er kritieke data mist, anders true
 		if (m == null) {return false;}
 		line = line.replaceAll("[^0-9?!.\\-:]", "");
 		switch(n) {
@@ -108,7 +113,7 @@ public class Parser {
 		}
 	}
 
-	private float correctTemp(int stn, boolean isMexico, float temp) {
+	private float correctTemp(int stn, boolean isMexico, float temp) {	// temperatuur wordt aangepast wanneer het te hoog of te laag is.
 		final float maxTempDifference = 4;		// maximale graden C verschil tussen twee metingen
 
 		float extrapolation = 0;				// voorspelling wat ongeveer de volgende waarde zou zijn
@@ -153,14 +158,17 @@ public class Parser {
 					ext = (ext/5) * 2;
 				}
 				ext /= 2;
-				return ext;
+				return ext;	//geëxtrapoleerde data
+			}
+			else if(stack.size() == 0){
+				return 0;	// geen gegevens beschikbaar, geen extrapolatie mogelijk
 			}
 			else{	// geen compleet gevulde stack, minder deskundig, geeft ook een redelijke extrapolatie
 				ext = stack.get(0);
 				for(int i = 1; i < stack.size(); i++){
 					ext = (ext + stack.get(i)) / 2;
 				}
-				return ext;
+				return ext;	//geëxtrapoleerde data
 			}
 		} catch (IOException e){
 			e.printStackTrace();
@@ -177,6 +185,7 @@ public class Parser {
 
 		/*
 		Een stack class maar nu met een maximum van 30 waarden.
+		@Author Jorian Koning
 		 */
 
 		private Stack30() {
@@ -186,7 +195,7 @@ public class Parser {
 		@Override
 		public T push(T object) {
 			int maxSize = 30;
-			if (this.size() == maxSize) {
+			if (this.size() == maxSize) {	// FIFO, als er meer dan 30 in de stack zitten, gaat de oudste data er uit
 				this.remove(0);
 			}
 			return super.push(object);
