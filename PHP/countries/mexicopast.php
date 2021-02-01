@@ -14,7 +14,7 @@ $csv = array_map('str_getcsv', file('../config/FullWeatherData.csv'));
 $station = array_map('str_getcsv', file('../config/stations.csv'));
 
 //this function is used to find specific items in a multidimensional array
-function search($array, $key, $value) {
+function search($array, $key, $value, $currentstation) {
     $results = array();
 
     // if it is array
@@ -23,7 +23,9 @@ function search($array, $key, $value) {
         // if array has required key and value
         // matched store result
         if (isset($array[$key]) && $array[$key] == $value) {
-            $results[] = $array;
+          if (isset($array[0]) && $array[0] == $currentstation) {  
+          $results[] = $array;
+          }
         }
 
         // Iterate for each element in array
@@ -31,7 +33,7 @@ function search($array, $key, $value) {
 
             // recur through each element and append result
             $results = array_merge($results,
-                    search($subarray, $key, $value));
+                    search($subarray, $key, $value, $currentstation));
         }
     }
 
@@ -39,7 +41,7 @@ function search($array, $key, $value) {
 }
 //checks if the submit button has been clicked
 if (isset($_GET['station'])) {
-//this variable gets the information from the pag2.php form
+//this variable gets the information from the mexico.php form
 if ($_GET['station'] == NULL) {
   header("location: ../page2.php");
 }
@@ -50,7 +52,7 @@ else {
 }
 //echo $currentDay;
 //the function is used to find the $currentstation in the array $csv
-$date = search($csv, '1', $currentDay);
+$date = search($csv, '1', $currentDay, $currentstation);
 if ($date == NULL){
     //echo "no data found";
     $past[] = array("no data found","", "", "no data found",
@@ -73,13 +75,13 @@ $pastdata = end($past);
 //$pastdata is the array with the past weather information
 //$pastdata = end($dataArray);
 
-$country = search($station, '0', $currentstation);
+$country = search($station, '0', $currentDay, $currentstation);
 
 foreach ($country as $zar) {
   $name[] = $zar["1"];
 }
 
-$lastCountry = end($name);
+//$lastCountry = end($name);
 
 
 function changeDate($pastdata, $day){
